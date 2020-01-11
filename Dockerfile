@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:14.04
 
 MAINTAINER Ducksonspeed
 
@@ -35,6 +35,10 @@ ENV GID 1000
 # Install dependencies 
 RUN apt-get update &&\ 
     apt-get install -y curl lib32gcc1 lsof git
+    
+RUN sed -i.bkp -e \
+	's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers \
+	/etc/sudoers
 
 # Run commands as the steam user
 RUN adduser \ 
