@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-MAINTAINER TuRzAm
+MAINTAINER Ducksonspeed
 
 # Var for first config
 # Server Name
