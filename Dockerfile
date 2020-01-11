@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 MAINTAINER Ducksonspeed
 
@@ -18,7 +18,7 @@ ENV UPDATEONSTART 1
 # if the server is backup when start with docker start
 ENV BACKUPONSTART 1
 #  Tag on github for ark server tools
-ENV GIT_TAG v1.6.42
+ENV GIT_TAG v1.6.48
 # Server PORT (you can't remap with docker, it doesn't work)
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
@@ -36,19 +36,18 @@ ENV GID 1000
 RUN apt-get update &&\ 
     apt-get install -y curl lib32gcc1 lsof git
 
-# Enable passwordless sudo for users under the "sudo" group
-RUN sed -i.bkp -e \
-	's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers \
-	/etc/sudoers
-
 # Run commands as the steam user
 RUN adduser \ 
-	--disabled-login \ 
+	--disabled-login \
+	--disabled-password \ 
 	--shell /bin/bash \ 
 	--gecos "" \ 
 	steam
 # Add to sudo group
 RUN usermod -a -G sudo steam
+
+#Disables Password entry for all Sudoers
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
