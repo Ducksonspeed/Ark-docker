@@ -43,6 +43,7 @@ RUN adduser \
 	--shell /bin/bash \ 
 	--gecos "" \ 
 	steam
+	
 # Add to sudo group
 RUN usermod -a -G sudo steam
 
