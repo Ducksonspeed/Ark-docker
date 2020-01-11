@@ -2,6 +2,8 @@ FROM ubuntu:18.04
 
 MAINTAINER Ducksonspeed
 
+USER root
+
 # Var for first config
 # Server Name
 ENV SESSIONNAME "Ark Docker"
@@ -44,11 +46,12 @@ RUN adduser \
 	--gecos "" \ 
 	steam
 	
-# Add to sudo group
-RUN usermod -a -G sudo steam
-
 #Disables Password entry for all Sudoers
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# Add to sudo group 
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
+    usermod -a -G sudo steam && \
+    touch /home/steam/.sudo_as_admin_successful
+
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
@@ -82,7 +85,7 @@ COPY instance.cfg /etc/arkmanager/instances/main.cfg
 
 RUN chown steam -R /ark && chmod 755 -R /ark
 
-#USER steam 
+USER steam 
 
 # download steamcmd
 RUN mkdir /home/steam/steamcmd &&\ 
